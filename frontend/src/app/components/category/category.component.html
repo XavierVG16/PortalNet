@@ -1,0 +1,185 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    Servicios
+    <small>Seccion Servicios </small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a routerLink="/inicio"><i class="fa fa-dashboard"></i> Inicia</a></li>
+
+    <li class="active">Servicios</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="box">
+    <div class="box-header with-border">
+      <h3 class="box-title">Servicios</h3>
+
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+          <i class="fa fa-minus"></i></button>
+
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="box-tools pull-right">
+        <a class="btn   btn-xm btn-primary" data-toggle="modal" data-target="#myModal">
+          <span> Agregar</span></a>
+
+      </div>
+      <br><br><br>
+
+<div class="col-xs-12 table-responsive">
+
+
+
+      <table class="table table-bordered">
+
+        <thead>
+          <tr>
+            <th style="width:1px; "> # </th>
+
+            <th>Nombre Plan</th>
+            <th>Descripcion</th>
+            <th>Precio</th>
+            <th>Cantida Megas</th>
+            <th>Velocidad Subida (kbps)</th>
+            <th>Velocidad Bajada (kbps)</th>
+            <th>Accion</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let category of categoryService.categories | paginate:{itemsPerPage:5, currentPage: pageActual}; let i = index">
+
+            <td>{{i+1}}</td>
+            <td>{{category.nombre_plan}}</td>
+            <td>{{category.descripcion}} </td>
+            <td>{{category.precio}}</td>
+            <td>{{category.cantidad_megas}} </td>
+            <td>{{category.subida_kbps}} kbps</td>
+            <td>{{category.bajada_kbps}} kbps</td>
+            <td> <a class="btn   btn-sm btn-primary   pull-left" (click)="editCategory(category)" data-toggle="modal" style="margin: 2px;"
+                data-target="#myModal">
+                <i class="fa fa-pencil"></i> Editar
+
+              </a>
+
+              <a class="btn   btn-sm btn-danger  pull-left" style="margin: 2px;"
+                (click)="deleteCategory(category.idplan_servicio, categoryForm)">
+                <i class="fa fa-times"></i> Eliminar
+              </a></td>
+
+          </tr>
+
+
+        </tbody>
+        <tfoot>
+          <pagination-controls (pageChange)="pageActual = $event"></pagination-controls>
+
+        </tfoot>
+      </table>
+</div>
+    </div>
+
+    <!-- /.box-body -->
+    <div class="box-footer">
+
+
+      <!-- Modal -->
+
+    </div>
+    <!-- /.box-footer-->
+  </div>
+  <!-- /.box -->
+
+</section>
+<!-- /.content -->
+
+<div class="modal modal-primary" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">
+          {{!categoryService.selectedCategory.idplan_servicio ?'Agregar' : 'Editar'}} Servicio</h4>
+      </div>
+      <form name="calculadora" #categoryForm="ngForm" (ngSubmit)="addCategory(categoryForm)">
+        <div class="modal-body">
+
+          <div class="box-body">
+            <input type="hidden" name="idplan_servicio" #idplan_servicio
+              [(ngModel)]="categoryService.selectedCategory.idplan_servicio">
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Nombre Plan (*)</label>
+                  <input type="text" name="nombre_plan" #name="ngModel"
+                    [(ngModel)]="categoryService.selectedCategory.nombre_plan" class="form-control" required>
+
+                </div>
+                <div class="form-group">
+                  <label>Precio (*)</label>
+                  <input type="text" name="precio" #name="ngModel" [(ngModel)]="categoryService.selectedCategory.precio"
+                    class="form-control" required>
+
+                </div>
+                <!-- /.form-group -->
+                <div class="form-group">
+                  <label>Descripcion</label>
+                  <input type="text" name="descripcion" #name="ngModel"
+                    [(ngModel)]="categoryService.selectedCategory.descripcion" class="form-control" required>
+                </div>
+                <!-- /.form-group -->
+              </div>
+
+              <div class="col-md-6">
+
+                <!-- /.form-group -->
+                <div class="form-group">
+                  <label>Cantida Megas (*)</label>
+                  <input type="number" name="cantidad_megas" onKeyUp="Suma()" #name="ngModel"
+                    [(ngModel)]="categoryService.selectedCategory.cantidad_megas" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label>Velocidad Subida Kbps</label>
+                  <input type="text" name="subida_kbps" #name="ngModel"
+                    [(ngModel)]="categoryService.selectedCategory.subida_kbps" class="form-control" disabled required>
+                </div>
+                <div class="form-group">
+                  <label>Velocidad Bajada Kbps</label>
+                  <input type="text" name="bajada_kbps" #name="ngModel"
+                    [(ngModel)]="categoryService.selectedCategory.bajada_kbps" class="form-control"  disabled required>
+                </div>
+
+              </div>
+            </div>
+            <!-- /.row -->
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline pull-left" data-dismiss="modal" (click)="resetForm(categoryForm)"><i
+              class="fa fa-remove"></i> Cerrar</button>
+
+          <button class="btn btn-outline"> <i class="fa  fa-folder"></i> Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  $('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').focus()
+  })
+</script>
+
