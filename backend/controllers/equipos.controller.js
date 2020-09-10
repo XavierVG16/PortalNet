@@ -8,7 +8,7 @@ equipoCtrl.getEquipos = async (req, res, next) => {
 };
 
 equipoCtrl.createEquipo = async (req, res, next) => {
-    const { equipo, cantidad, precio, serie, _proveedor_nombre } = req.body;
+    const { equipo, cantidad, precio, serie, _proveedor_nombre , descripcion } = req.body;
     console.log(req.body)
    const row = await pool.query('select * from proveedor where proveedor_nombre = ?', _proveedor_nombre);
     row.forEach(element => {
@@ -19,7 +19,8 @@ equipoCtrl.createEquipo = async (req, res, next) => {
         cantidad,
         precio,
         serie,
-        proveedor
+        proveedor,
+        descripcion
     };
     console.log(newEquipo)
       await pool.query('insert into equipos  set ?', newEquipo);
@@ -34,13 +35,13 @@ equipoCtrl.getEquipo = async (req, res, next) => {
 equipoCtrl.editEquipo = async (req, res, next) => {
     const { id } = req.params;
     console.log(id)
-    const { equipo, cantidad, precio, serie, _proveedor_nombre } = req.body;
+    const { equipo, cantidad, precio, serie, _proveedor_nombre, descripcion } = req.body;
     const row = await pool.query('select * from proveedor where proveedor_nombre = ?', _proveedor_nombre);
     row.forEach(element => {
         proveedor = element.id_proveedor
     });
     const editEquipo = {
-        equipo, cantidad, precio, serie, proveedor
+        equipo, cantidad, precio, serie, proveedor, descripcion
     };
     await pool.query('UPDATE equipos set ? WHERE idequipo = ?', [editEquipo, id]);
     res.json({ status: 'equipo Updated' });

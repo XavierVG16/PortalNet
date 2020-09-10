@@ -8,17 +8,17 @@ proveedorCtrl.getProveedores = async (req, res, next) => {
 };
 
 proveedorCtrl.createProveedor = async (req, res, next) => {
-    const { proveedor_nombre, email, telefono, direccion, nombre_beneficiario, n_cuenta, cedula, banco } = req.body;
- 
+    const { proveedor_nombre, email, telefono, direccion, nombre_beneficiario, n_cuenta, cedula, banco, tipo_cuenta, beneficiario, descripcion_p } = req.body;
+
     const newProveedor = {
         proveedor_nombre,
-         email,
-         telefono,
-         direccion,
-         nombre_beneficiario,
-         n_cuenta,
-         cedula,
-         banco 
+        email,
+        telefono,
+        direccion,
+        nombre_beneficiario,
+        n_cuenta,
+        cedula,
+        banco, tipo_cuenta, beneficiario, descripcion_p
     };
     await pool.query('insert into proveedor  set ?', newProveedor);
     res.json({ status: 'proveedor  creada' });
@@ -32,19 +32,18 @@ proveedorCtrl.getProveedor = async (req, res, next) => {
 proveedorCtrl.editProveedor = async (req, res, next) => {
     const { id } = req.params;
     console.log(id)
-    const { proveedor_nombre, email, telefono, direccion, nombre_beneficiario, n_cuenta, cedula, banco } = req.body;
-   
+    const { proveedor_nombre, email, telefono, direccion, nombre_beneficiario, n_cuenta, cedula, banco, tipo_cuenta, beneficiario, descripcion_p } = req.body;
+
     const editProveedor = {
-      
-            proveedor_nombre,
-            email,
-            telefono,
-            direccion,
-            nombre_beneficiario,
-            n_cuenta,
-            cedula,
-            banco
-     
+
+        proveedor_nombre,
+        email,
+        telefono,
+        direccion,
+        nombre_beneficiario,
+        n_cuenta,
+        cedula,
+        banco, tipo_cuenta, beneficiario, descripcion_p
     };
     await pool.query('UPDATE proveedor set ? WHERE id_proveedor = ?', [editProveedor, id]);
     res.json({ status: 'Provedor Updated' });
